@@ -1,6 +1,8 @@
 const { Sequelize } = require('sequelize');
+import * as dotenv from 'dotenv'
+dotenv.config()
 
-const sequelize = new Sequelize('database', 'username', 'password', {
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: 'localhost',
   dialect: 'postgres'
 });
