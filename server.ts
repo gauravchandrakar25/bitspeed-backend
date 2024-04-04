@@ -3,12 +3,16 @@ import * as dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors' 
 import helmet from 'helmet'
+const db_connection = require('./dbConnection/dbconnection')
 
 //App Varaibles 
 dotenv.config()
 
 //intializing the express app 
 const app = express(); 
+
+//connecting db
+db_connection()
 
 //using the dependancies
 app.use(helmet()); 
