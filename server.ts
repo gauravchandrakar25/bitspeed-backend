@@ -19,6 +19,9 @@ app.use(helmet());
 app.use(cors()); 
 app.use(express.json())
 
+//mount the routes
+app.use("/",require("./route/identifyRoute"))
+
 const PORT = process.env.PORT || 3000
 
 //Listing to the app and running it on PORT 5000
