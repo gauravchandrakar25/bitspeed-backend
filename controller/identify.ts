@@ -9,25 +9,40 @@ import { Request, Response } from "express";
 const identifyController = asyncHandler(async (req: Request, res: Response) => {
   const { email, phoneNumber } = req.body;
 
-  if(!email && !phoneNumber){
-    res.status(404).json({message: 'Provide at least one detail'});
+  if (!email && !phoneNumber) {
+    res.status(404).json({ message: "Provide at least one detail" });
   }
 
   try {
     const contact = await Contact.findAll({
       where: {
         email: email,
-        or: [{ phoneNumber: phoneNumber }],
+        phoneNumber: phoneNumber,
       },
     });
 
-    console.log(contact)
-
-    //if (not contact found)
-    //     create new contact and mark as primary
-    // else 
-    //     find the related contact and give the output
-        
+    if (contact.length == 0) {
+      //create a new contact if no contact found
+      Contact.create({
+        email: email,
+        phoneNumber: phoneNumber,
+        linkPrecedence: "primary",
+      });
+      res.status(204).json({
+        message: "Contact not found",
+        success: "Contact created successfully",
+      });
+    } else {
+      //TODO: implement this method
+      res.status(200).json({
+        contact: {
+          primaryContatctId: phoneNumber,
+          emails: [], // first element being email of primary contact
+          phoneNumbers: [], // first element being phoneNumber of primary contact
+          secondaryContactIds: [], // Array of all Contact IDs that are "secondary" to the primary contact
+        },
+      });
+    }
     
   } catch (error) {
     console.log(error);
